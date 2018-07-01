@@ -1,0 +1,74 @@
+﻿@model IEnumerable<Task2.Models.CarOwnerDB.Car>
+
+@{
+    ViewData["Title"] = "Cars";
+}
+
+<h2>Cars</h2>
+
+<p>
+    <a asp-action="CreateCar">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Model)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Brand)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.IsPassengerCar)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Price)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Year)
+                </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Model)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Brand)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsPassengerCar)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Year)
+            </td>
+            <td>
+                <a id="list" asp-route-id="@item.Id">List of owners</a> |
+                <a asp-action="EditCar" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="DeleteCar" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+
+<div id="show">
+    empty
+</div>
+
+@section scripts
+{
+    <script>
+        $(function () {
+            $("#list").click(function (e) {
+                $("#show").load("Home/CarOwner", { id: $("#list").attr("asp-route-id") });
+            })
+        })
+    </script>
+}
