@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "EditOwner";
+    int pos = 0;
 }
 
 <h2>EditOwner</h2>
@@ -12,11 +13,11 @@
     <div class="col-md-4">
         <form asp-action="EditOwner">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="Owner.Id" />
             <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" value="@Model.Owner.Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
+                <label asp-for="Owner.Name" class="control-label"></label>
+                <input asp-for="Owner.Name" value="@Model.Owner.Name" class="form-control" />
+                <span asp-validation-for="Owner.Name" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Owner.Surname" class="control-label"></label>
@@ -35,16 +36,15 @@
             </div>
             <div class="form-group input_fields_wrap">
                 <label asp-for="Owner.CarOwners" class="control-label"></label>
-                <button class="btn">Add More Fields</button>
+                <button type="button" class="btn add_field_button">Add More Fields</button>
+                @foreach (var c in Model.CarsIds)
+                {
+                    <div>
+                        <input type="number" value="@c" name="mytext[]" asp-for="CarsIds[@pos++]">
+                    </div>
+                }
                 <div>
-                    <input list="owners" name="mytext[]" asp-for="Owner.Car.CarOwners">
-                    <datalist id="owners">
-                        @foreach (var c in Model.Owner.Owners)
-                        {
-                            <option value="@c.Id" />
-                        }
-                    </datalist>
-
+                    <input type="number" asp-for="CarsIds[@pos++]" value="" />
                 </div>
             </div>
             <div class="form-group">
@@ -66,7 +66,7 @@
 
             $(add_button).click(function (e) { //on add input button click
                 e.preventDefault();
-                $(wrapper).append('<div><input type="text" name="mytext[]"/><a href="#" class="remove_field">Remove</a></div>'); //add input box
+                $(wrapper).append('<div><input type="number" name="mytext[]" asp-for="CarsIds[@pos++]"> <a href="#" class="remove_field">Remove</a></div>'); //add input box
             });
 
             $(wrapper).on("click", ".remove_field", function (e) { //user click on remove text

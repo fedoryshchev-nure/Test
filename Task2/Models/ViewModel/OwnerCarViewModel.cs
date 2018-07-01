@@ -9,6 +9,6 @@ namespace Task2.Models.ViewModel
     public class OwnerCarViewModel
     {
         public Owner Owner { get; set; }
-        public IEnumerable<Car> Cars { get; set; }
+        public List<int> CarsIds { get; set; }
     }
 }

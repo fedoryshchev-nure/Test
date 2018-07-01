@@ -95,7 +95,8 @@ namespace Task2.Controllers
                         .Select(y => y.OwnerId)
                         .ToHashSet();
                     CarOwner.Owners = db.Owners
-                        .Where(x => ownersIds.Contains(x.Id));
+                        .Where(x => ownersIds.Contains(x.Id))
+                        .ToList();
 
                     return View(CarOwner);
                 }
@@ -125,20 +126,43 @@ namespace Task2.Controllers
         {
             if (id != null)
             {
-                Owner owner = db.Owners.FirstOrDefault(x => x.Id == id);
-                // OwnerCarViewModel Ещё тут не поменял
-                if (owner != null)
+                OwnerCarViewModel ownerCarViewModel = new OwnerCarViewModel()
                 {
-                    return View(owner);
+                    Owner = db.Owners
+                        .Include(x => x.CarOwners)
+                        .FirstOrDefault(x => x.Id == id)
+                };
+                if (ownerCarViewModel.Owner != null)
+                {
+                    ownerCarViewModel.CarsIds = db.CarOwners
+                        .Where(x => x.OwnerId == id)
+                        .Select(y => y.CarId)
+                        .ToList();
+
+                    return View(ownerCarViewModel);
                 }
             }
             return NotFound();
         }
 
         [HttpPost]
-        public IActionResult EditOwner(Owner owner)
+        public IActionResult EditOwner(OwnerCarViewModel ownerCarViewModel)
         {
-            db.Owners.Update(owner);
+            db.Owners.Update(ownerCarViewModel.Owner);
+            
+            for(int i = 0; i < ownerCarViewModel.CarsIds.Count(); ++i)
+            {
+                Car car = db.Cars.FirstOrDefault(x => x.Id == ownerCarViewModel.CarsIds.ElementAt(i));
+                if (car != null)
+                {
+                    db.CarOwners.Add(new CarOwner()
+                    {
+                        Owner = ownerCarViewModel.Owner,
+                        Car = car
+                    });
+                }
+            }
+
             db.SaveChanges();
             return RedirectToAction("Owners");
         }
