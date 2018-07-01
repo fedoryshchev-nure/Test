@@ -1,4 +1,4 @@
-﻿@model Task2.Models.CarOwnerDB.Owner
+﻿@model Task2.Models.ViewModel.OwnerCarViewModel
 
 @{
     ViewData["Title"] = "EditOwner";
@@ -15,23 +15,37 @@
             <input type="hidden" asp-for="Id" />
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" value="@Model.Name" class="form-control" />
+                <input asp-for="Name" value="@Model.Owner.Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Surname" class="control-label"></label>
-                <input asp-for="Surname" value="@Model.Surname" class="form-control" />
-                <span asp-validation-for="Surname" class="text-danger"></span>
+                <label asp-for="Owner.Surname" class="control-label"></label>
+                <input asp-for="Owner.Surname" value="@Model.Owner.Surname" class="form-control" />
+                <span asp-validation-for="Owner.Surname" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="BirthYear" class="control-label"></label>
-                <input asp-for="BirthYear" class="form-control" />
-                <span asp-validation-for="BirthYear" class="text-danger"></span>
+                <label asp-for="Owner.BirthYear" class="control-label"></label>
+                <input asp-for="Owner.BirthYear" class="form-control" />
+                <span asp-validation-for="Owner.BirthYear" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="DrivingExperienceDays" class="control-label"></label>
-                <input asp-for="DrivingExperienceDays" value="@Model.DrivingExperienceDays" class="form-control" />
-                <span asp-validation-for="DrivingExperienceDays" class="text-danger"></span>
+                <label asp-for="Owner.DrivingExperienceDays" class="control-label"></label>
+                <input asp-for="Owner.DrivingExperienceDays" value="@Model.Owner.DrivingExperienceDays" class="form-control" />
+                <span asp-validation-for="Owner.DrivingExperienceDays" class="text-danger"></span>
+            </div>
+            <div class="form-group input_fields_wrap">
+                <label asp-for="Owner.CarOwners" class="control-label"></label>
+                <button class="btn">Add More Fields</button>
+                <div>
+                    <input list="owners" name="mytext[]" asp-for="Owner.Car.CarOwners">
+                    <datalist id="owners">
+                        @foreach (var c in Model.Owner.Owners)
+                        {
+                            <option value="@c.Id" />
+                        }
+                    </datalist>
+
+                </div>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-default" />
@@ -45,5 +59,21 @@
 </div>
 
 @section Scripts {
+<script>
+        $(document).ready(function () {
+            var wrapper = $(".input_fields_wrap"); //Fields wrapper
+            var add_button = $(".add_field_button"); //Add button ID
+
+            $(add_button).click(function (e) { //on add input button click
+                e.preventDefault();
+                $(wrapper).append('<div><input type="text" name="mytext[]"/><a href="#" class="remove_field">Remove</a></div>'); //add input box
+            });
+
+            $(wrapper).on("click", ".remove_field", function (e) { //user click on remove text
+                e.preventDefault();
+                $(this).parent('div').remove();
+            })
+        });
+</script>
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

@@ -1,0 +1,20 @@
+﻿@model CarOwnerViewModel
+
+@{
+    ViewData["Title"] = "PartialCarOwner";
+}
+
+<h2>Owners of Car with Model: @Model.Car.Model and Brand: @Model.Car.Brand</h2>
+
+<div>
+    <p> Number of Owners: @Model.Owners.Count() </p>
+    @foreach (var ow in Model.Owners)
+    {
+        <div>
+            <p>
+                Owner name : @ow.Name
+            </p>
+        </div>
+    }
+</div>
+

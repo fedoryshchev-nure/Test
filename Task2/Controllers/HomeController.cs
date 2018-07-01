@@ -81,7 +81,6 @@ namespace Task2.Controllers
 
         public IActionResult CarOwner(int? id) // for car all owners
         {
-            return Content("From Car Owner");
             if (id != null)
             {
                 CarOwnerViewModel CarOwner = new CarOwnerViewModel
@@ -98,7 +97,7 @@ namespace Task2.Controllers
                     CarOwner.Owners = db.Owners
                         .Where(x => ownersIds.Contains(x.Id));
 
-                    return View("PartialCarOwner", CarOwner);
+                    return View(CarOwner);
                 }
             }
             return NotFound();
@@ -127,6 +126,7 @@ namespace Task2.Controllers
             if (id != null)
             {
                 Owner owner = db.Owners.FirstOrDefault(x => x.Id == id);
+                // OwnerCarViewModel Ещё тут не поменял
                 if (owner != null)
                 {
                     return View(owner);
