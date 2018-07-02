@@ -1,13 +1,12 @@
 ﻿@model Task2.Models.CarOwnerDB.Car
 
 @{
-    ViewData["Title"] = "View";
+    ViewData["Title"] = "Edit Car";
 }
 
-<h2>View</h2>
-
-<h4>Car</h4>
+<h2>Edit Car</h2>
 <hr />
+
 <div class="row">
     <div class="col-md-4">
         <form asp-action="EditCar">
@@ -26,7 +25,7 @@
             <div class="form-group">
                 <div class="checkbox">
                     <label>
-                        <input asp-for="IsPassengerCar" value="@Model.IsPassengerCar"/> @Html.DisplayNameFor(model => model.IsPassengerCar)
+                        <input asp-for="IsPassengerCar" value="@Model.IsPassengerCar"/> Passenger car
                     </label>
                 </div>
             </div>
@@ -48,7 +47,7 @@
 </div>
 
 <div>
-    <a asp-action="Cars">Back to List</a>
+    <h4> <a asp-action="Cars">Back to list of cars</a> </h4>
 </div>
 
 @section Scripts {

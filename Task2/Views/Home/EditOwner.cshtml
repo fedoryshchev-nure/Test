@@ -1,13 +1,11 @@
-﻿@model Task2.Models.ViewModel.OwnerCarViewModel
+﻿@model Task2.Models.ViewModel.OwnerCarIdsViewModel
 
 @{
     ViewData["Title"] = "EditOwner";
-    int pos = 0;
 }
 
-<h2>EditOwner</h2>
+<h2>Edit Owner</h2>
 
-<h4>Owner</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -25,26 +23,26 @@
                 <span asp-validation-for="Owner.Surname" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Owner.BirthYear" class="control-label"></label>
+                <label asp-for="Owner.BirthYear" class="control-label"> Year of birth</label>
                 <input asp-for="Owner.BirthYear" class="form-control" />
                 <span asp-validation-for="Owner.BirthYear" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Owner.DrivingExperienceDays" class="control-label"></label>
+                <label asp-for="Owner.DrivingExperienceDays" class="control-label">Driving experience in days</label>
                 <input asp-for="Owner.DrivingExperienceDays" value="@Model.Owner.DrivingExperienceDays" class="form-control" />
                 <span asp-validation-for="Owner.DrivingExperienceDays" class="text-danger"></span>
             </div>
             <div class="form-group input_fields_wrap">
-                <label asp-for="Owner.CarOwners" class="control-label"></label>
-                <button type="button" class="btn add_field_button">Add More Fields</button>
+                <label asp-for="Owner.CarOwners" class="control-label"> Ids of cars </label>
+                <button type="button" class="btn add_field_button">Add Field</button>
                 @foreach (var c in Model.CarsIds)
                 {
                     <div>
-                        <input type="number" value="@c" name="mytext[]" asp-for="CarsIds[@pos++]">
+                        <input type="number" value="@c" asp-for="CarsIds">
                     </div>
                 }
                 <div>
-                    <input type="number" asp-for="CarsIds[@pos++]" value="" />
+                    <input type="number" asp-for="CarsIds" value="" />
                 </div>
             </div>
             <div class="form-group">
@@ -66,7 +64,7 @@
 
             $(add_button).click(function (e) { //on add input button click
                 e.preventDefault();
-                $(wrapper).append('<div><input type="number" name="mytext[]" asp-for="CarsIds[@pos++]"> <a href="#" class="remove_field">Remove</a></div>'); //add input box
+                $(wrapper).append('<div><input type="number" asp-for="CarsIds"> <a href="#" class="remove_field">Remove</a></div>'); //add input box
             });
 
             $(wrapper).on("click", ".remove_field", function (e) { //user click on remove text

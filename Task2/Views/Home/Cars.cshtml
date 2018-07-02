@@ -4,29 +4,30 @@
     ViewData["Title"] = "Cars";
 }
 
-<h2>Cars</h2>
+<h1>Cars</h1>
 
-<p>
-    <a asp-action="CreateCar">Create New</a>
-</p>
+<h3>
+    <a asp-action="CreateCar" class="">Create New</a>
+</h3>
+
 <table class="table">
     <thead>
         <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Model)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Brand)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.IsPassengerCar)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Price)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Year)
-                </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Model)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Brand)
+            </th>
+            <th>
+                Passenger car
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Year)
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -49,7 +50,7 @@
                 @Html.DisplayFor(modelItem => item.Year)
             </td>
             <td>
-                <a id="list" asp-action="CarOwner" asp-route-id="@item.Id">List of owners</a> |
+                <a asp-action="CarOwner" asp-route-id="@item.Id">List of owners</a> |
                 <a asp-action="EditCar" asp-route-id="@item.Id">Edit</a> |
                 <a asp-action="DeleteCar" asp-route-id="@item.Id">Delete</a>
             </td>
@@ -57,18 +58,3 @@
 }
     </tbody>
 </table>
-
-<div id="show">
-    empty
-</div>
-
-@section scripts
-{
-    <script>
-        $(function () {
-            $("#list").click(function (e) {
-                $("#show").load("Home/CarOwner", { id: $("#list").attr("asp-route-id") });
-            })
-        })
-    </script>
-}

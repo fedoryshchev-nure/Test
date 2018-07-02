@@ -1,0 +1,21 @@
+﻿@model OwnerCarViewModel
+
+@{
+    ViewData["Title"] = "PartialCarOwner";
+    int number = 1;
+}
+
+<h2>Cars of owner (id: @Model.Owner.Id)</h2>
+
+<div>
+    <h3> Amount: @Model.Cars.Count() </h3>
+    @foreach (var ow in Model.Cars)
+    {
+        <div>
+            <h4> @number.  Car brand : @ow.Brand, model : @ow.Model </h4>
+            <br />
+        </div>
+        number++;
+    }
+</div>
+

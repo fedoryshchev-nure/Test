@@ -126,7 +126,7 @@ namespace Task2.Controllers
         {
             if (id != null)
             {
-                OwnerCarViewModel ownerCarViewModel = new OwnerCarViewModel()
+                OwnerCarIdsViewModel ownerCarViewModel = new OwnerCarIdsViewModel()
                 {
                     Owner = db.Owners
                         .Include(x => x.CarOwners)
@@ -146,13 +146,18 @@ namespace Task2.Controllers
         }
 
         [HttpPost]
-        public IActionResult EditOwner(OwnerCarViewModel ownerCarViewModel)
+        public IActionResult EditOwner(OwnerCarIdsViewModel ownerCarViewModel)
         {
             db.Owners.Update(ownerCarViewModel.Owner);
+            db.CarOwners
+                .RemoveRange(db.CarOwners
+                    .Where(x => x.OwnerId == ownerCarViewModel.Owner.Id)
+                );
+            db.SaveChanges();
             
             for(int i = 0; i < ownerCarViewModel.CarsIds.Count(); ++i)
             {
-                Car car = db.Cars.FirstOrDefault(x => x.Id == ownerCarViewModel.CarsIds.ElementAt(i));
+                Car car = db.Cars.FirstOrDefault(x => x.Id == ownerCarViewModel.CarsIds[i]);
                 if (car != null)
                 {
                     db.CarOwners.Add(new CarOwner()
@@ -186,29 +191,25 @@ namespace Task2.Controllers
         {
             if (id != null)
             {
-                var OwnerCar = db.CarOwners.Where(x => x.OwnerId == id);
-                return View(OwnerCar);
+                OwnerCarViewModel OwnerCarViewModel = new OwnerCarViewModel
+                {
+                    Owner = db.Owners.FirstOrDefault(x => x.Id == id)
+                };
+
+                if (OwnerCarViewModel.Owner != null)
+                {
+                    var carsIds = db.CarOwners
+                        .Where(ownerCar => ownerCar.OwnerId == id)
+                        .Select(y => y.CarId)
+                        .ToHashSet();
+                    OwnerCarViewModel.Cars = db.Cars
+                        .Where(x => carsIds.Contains(x.Id))
+                        .ToList();
+
+                    return View(OwnerCarViewModel);
+                }
             }
             return NotFound();
-        }
-
-        public IActionResult About()
-        {
-            ViewData["Message"] = "Your application description page.";
-
-            return View();
-        }
-
-        public IActionResult Contact()
-        {
-            ViewData["Message"] = "Your contact page.";
-
-            return View();
-        }
-
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
 }

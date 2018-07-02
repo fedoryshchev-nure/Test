@@ -6,9 +6,9 @@ using Task2.Models.CarOwnerDB;
 
 namespace Task2.Models.ViewModel
 {
-    public class OwnerCarViewModel
+    public class OwnerCarIdsViewModel
     {
         public Owner Owner { get; set; }
-        public List<Car> Cars { get; set; }
+        public List<int> CarsIds { get; set; }
     }
 }
